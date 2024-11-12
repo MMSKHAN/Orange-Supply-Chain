@@ -1,0 +1,57 @@
+.orderStatusContainer{
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+    min-height: 100vh;
+    padding: 2rem;
+}.orderAcept{
+    display: flex;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+
+}.lat{
+    font-family: 'Roboto';
+    font-size: 1.2rem;
+    font-weight: bold;
+}.gpscontainer{
+    width: fit-content;
+    padding: 2rem;
+    background: rgb(255 255 255 / 27%);
+    border-radius: 8px;
+}.gpscontainer>p{
+    background-color: transparent;
+}.orderStatus{
+    color: #FACE17;
+    font-size: 3rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    margin-top: 2rem;
+}.gps{
+    font-size: 2rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    text-align: center;
+    margin-bottom: 2rem;
+}.firbasecon{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+}.Firebase{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}.OrderStrong{
+    color: greenyellow;
+    font-size: 1rem;
+    font-weight: bold;
+
+}

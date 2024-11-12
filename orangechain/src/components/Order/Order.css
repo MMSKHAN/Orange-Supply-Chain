@@ -1,0 +1,47 @@
+.orderCon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: 2rem;
+    height: 100vh;
+    width: 95%;
+}
+.order-status-card {
+    background: #4c4848; /* Match product card background */
+    padding: 20px;
+    border-radius: 8px;
+    margin: 20px;
+    box-shadow: 10px 10px 17px rgba(0, 0, 0, 0.75);
+    transition: box-shadow 0.3s;
+    width: fit-content;
+    padding: 2rem
+}
+
+.order-status-card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.action-buttons {
+    margin: 10px 0;
+}
+
+.action-buttons button {
+    margin-right: 10px;
+    padding: 0.5rem 1rem;
+    background: greenyellow;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.action-buttons button:hover {
+    background: #ffd700; /* Change on hover */
+}
+
+.account-info {
+    margin-top: 20px;
+    font-size: 14px;
+    color: white;
+}

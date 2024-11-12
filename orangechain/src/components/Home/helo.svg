@@ -1,0 +1,71 @@
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="400" fill="black" />
+
+  <!-- Text Titles -->
+  <text x="50%" y="40" font-size="24" fill="white" text-anchor="middle">CONVENTIONAL SUPPLY CHAIN</text>
+  <text x="50%" y="240" font-size="24" fill="white" text-anchor="middle">DIRECT-TO-CUSTOMER (D2C) SUPPLY CHAIN</text>
+
+  <!-- Conventional Supply Chain Icons and Labels -->
+  <g fill="white" font-size="16">
+    <!-- Manufacturer -->
+    <rect x="50" y="80" width="100" height="60" fill="none" stroke="white" />
+    <text x="100" y="170" text-anchor="middle">Manufacturer</text>
+
+    <!-- Arrow -->
+    <line x1="150" y1="110" x2="200" y2="110" stroke="white" stroke-width="2" marker-end="url(#arrow)" />
+
+    <!-- Wholesaler -->
+    <rect x="200" y="80" width="100" height="60" fill="none" stroke="white" />
+    <text x="250" y="170" text-anchor="middle">Wholesaler</text>
+
+    <!-- Arrow -->
+    <line x1="300" y1="110" x2="350" y2="110" stroke="white" stroke-width="2" marker-end="url(#arrow)" />
+
+    <!-- Distributor -->
+    <rect x="350" y="80" width="100" height="60" fill="none" stroke="white" />
+    <text x="400" y="170" text-anchor="middle">Distributor</text>
+
+    <!-- Arrow -->
+    <line x1="450" y1="110" x2="500" y2="110" stroke="white" stroke-width="2" marker-end="url(#arrow)" />
+
+    <!-- Retailer -->
+    <rect x="500" y="80" width="100" height="60" fill="none" stroke="white" />
+    <text x="550" y="170" text-anchor="middle">Retailer</text>
+
+    <!-- Arrow -->
+    <line x1="600" y1="110" x2="650" y2="110" stroke="white" stroke-width="2" marker-end="url(#arrow)" />
+
+    <!-- Customer -->
+    <circle cx="675" cy="110" r="30" fill="none" stroke="white" />
+    <text x="675" y="170" text-anchor="middle">Customer</text>
+  </g>
+
+  <!-- D2C Supply Chain Icons and Labels -->
+  <g fill="white" font-size="16">
+    <!-- Manufacturer -->
+    <rect x="50" y="280" width="100" height="60" fill="none" stroke="white" />
+    <text x="100" y="370" text-anchor="middle">Manufacturer</text>
+
+    <!-- Arrow -->
+    <line x1="150" y1="310" x2="200" y2="310" stroke="white" stroke-width="2" marker-end="url(#arrow)" />
+
+    <!-- Website -->
+    <rect x="200" y="280" width="100" height="60" fill="none" stroke="white" />
+    <text x="250" y="370" text-anchor="middle">Website</text>
+
+    <!-- Arrow -->
+    <line x1="300" y1="310" x2="350" y2="310" stroke="white" stroke-width="2" marker-end="url(#arrow)" />
+
+    <!-- Customer -->
+    <circle cx="375" cy="310" r="30" fill="none" stroke="white" />
+    <text x="375" y="370" text-anchor="middle">Customer</text>
+  </g>
+
+  <!-- Arrow Marker Definition -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="10" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="white" />
+    </marker>
+  </defs>
+</svg>

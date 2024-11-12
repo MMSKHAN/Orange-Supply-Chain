@@ -1,0 +1,53 @@
+.DeliveryContainer{
+    margin-top: 2rem;
+height: 100vh;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+}.DeleveryHeading{
+    color: #FACE17;
+    font-size: 3rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    margin-bottom: 2rem;
+}.DeleveryCard{
+    /* position: relative; */
+    /* top: 4rem; */
+    /* right: 6rem; */
+    border: none;
+    /* background: rgba(255, 255, 255, 0.5); */
+    padding: 3rem;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 30%;
+}.DeleveryMainCard{
+    display: flex;
+    flex-direction: column;
+    color: black;
+    gap: 2rem;
+}.Devinput{
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.567);
+    border: none;
+    width: 100%;
+    border-bottom: 2px solid orange;
+}.Devnumber{
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.567);
+    border: none;
+    width: 100%;
+    border-bottom: 2px solid orange;
+}.Devnumber2{
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.567);
+    border: none;
+    width: 100%;
+    border-bottom: 2px solid orange;
+}

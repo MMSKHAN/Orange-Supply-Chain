@@ -1,0 +1,159 @@
+.card{
+    position: relative;
+    /* top: 4rem; */
+    right: 6rem;
+    border: none;
+    /* background: rgba(255,255,255, 0.5); */
+    padding: 3rem;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+}.ClassMain
+.card-header{
+    border: none;
+    text-align: center;
+    font-size: 1.5rem;
+    font-family: serif;
+    color:black;
+}.sender{
+    font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    
+}.senderinput,.receiverinput{
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+}.senderinput :nth-child(1) {
+    width: 30vw;
+    height: 6vh;
+}.receiverinput1{
+width: 80%;
+}
+
+
+
+::placeholder{
+    color: white;
+}
+
+.card-body{
+    border: none;
+}form{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}.button{
+width: fit-content;
+background-color: rgb(66, 66, 244);
+color: white;
+border: none;
+padding-left: 2rem;
+padding-right: 2rem;
+padding-top: 0.5rem;
+padding-bottom: 0.5rem;
+text-align: center;
+align-self: center;
+border-radius: 8px;
+border-radius: 15px;
+box-shadow: 0 5px #999;
+}.button:hover{
+    background-color: red;
+    color:white;
+}
+.button:active{
+    background-color: #3e8e41;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}.ClassMain{
+    padding: 2rem;
+    gap: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 9rem;
+}.CreateClass{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.productform h1{
+color: white;
+/* font-size: large; */
+}.productform div{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    color: white;
+}.productform{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    align-items: center;
+}
+.productform div p{
+    font-size: 1rem;
+    width: 100%;
+}
+.productform div .inputs{
+    background-color: transparent;
+    color: white;
+    border: none;
+    width: 100%;
+    border-bottom: 2px solid orange;
+}
+.productform div input:focus{
+ /* outline: none; */
+ border-bottom: orange;   
+}.register_btn{
+    background: green;
+    border: none;
+    color: white;
+    width: fit-content;
+    padding: 1rem;
+    border-radius: 14px;
+
+}.h1h {
+    font-size: 3rem;
+    font-family: "Roboto", sans-serif;
+    font-weight: 900;
+    font-style: normal;
+    color: hsl(0, 0%, 28%);
+    font-size: 50px!important;
+    /* font-weight: bold!important; */
+    font-family: monospace;
+    letter-spacing: 5px!important;
+    /* cursor: pointer; */
+    /* line-height: 0%; */
+    text-transform: uppercase;
+  }
+  
+  .h1h {
+    /* padding: 64px; */
+    background: linear-gradient(to right, hsl(0, 0%, 30%) 0, hsl(53, 79%, 54%) 10%, hsl(0, 0%, 30%) 20%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shine 3s infinite linear;
+  }
+  
+  @keyframes shine {
+    0% {
+      background-position: 0;
+    }
+    60% {
+      background-position: 600px;
+    }
+    100% {
+      background-position: 600px;
+    }
+  }.gifsize{
+    position: relative;
+    left: 4rem;
+  }

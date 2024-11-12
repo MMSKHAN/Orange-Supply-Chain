@@ -1,0 +1,85 @@
+import React, { useState, useEffect } from 'react';
+// Import Firebase 9 modular SDK
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, onValue, off } from 'firebase/database';
+
+// Firebase Configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyCI5nL-n-djoo1IzhjCdpX3PdAUmcW9xmo",
+    authDomain: "iot-a3dd1.firebaseapp.com",
+    databaseURL: "https://iot-a3dd1-default-rtdb.firebaseio.com",
+    projectId: "iot-a3dd1",
+    storageBucket: "iot-a3dd1.firebasestorage.app",
+    messagingSenderId: "472525442916",
+    appId: "1:472525442916:web:31a24ec674b90105513471"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+const Firebasecode = () => {
+  const [gpsData, setGpsData] = useState({});
+  const [dhtData, setDhtData] = useState({});
+
+  useEffect(() => {
+    const gpsDataRef = ref(database, 'gps_data'); // Updated path to gps_data
+    const sensorDataRef = ref(database, 'sensor_data'); // Updated path to sensor_data
+
+    // Listen for changes in GPS data
+    const gpsListener = onValue(gpsDataRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log("GPS Data:", data);  // Log GPS data to verify
+      if (data) {
+        // Get the first object inside gps_data (you might want to adjust this if there are multiple records)
+        const firstGpsRecord = Object.values(data)[0];
+        setGpsData(firstGpsRecord || {});
+      } else {
+        setGpsData({});
+      }
+    });
+
+    // Listen for changes in DHT sensor data
+    const sensorListener = onValue(sensorDataRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log("DHT Data:", data);  // Log DHT data to verify
+      if (data) {
+        // Get the first object inside sensor_data (adjust if multiple records exist)
+        const firstSensorRecord = Object.values(data)[0];
+        setDhtData(firstSensorRecord || {});
+      } else {
+        setDhtData({});
+      }
+    });
+
+    // Clean up the listeners when the component unmounts
+    return () => {
+      off(gpsDataRef, "value", gpsListener);
+      off(sensorDataRef, "value", sensorListener);
+    };
+  }, []);
+
+  return (
+    <div className="App">
+      <h1>GPS and DHT Sensor Data</h1>
+
+      <div>
+        <h2>GPS Data:</h2>
+        {/* Safely access gpsData */}
+        <p><strong>Latitude:</strong> {gpsData.latitude ?? 'N/A'}</p>
+        <p><strong>Longitude:</strong> {gpsData.longitude ?? 'N/A'}</p>
+        <p><strong>Speed:</strong> {gpsData.speed ?? 'N/A'} km/h</p>
+        <p><strong>Altitude:</strong> {gpsData.altitude ?? 'N/A'} meters</p>
+      </div>
+
+      <div>
+        <h2>DHT Sensor Data:</h2>
+        {/* Safely access dhtData */}
+        <p><strong>Temperature:</strong> {dhtData.temperature ?? 'N/A'}°C</p>
+        <p><strong>Humidity:</strong> {dhtData.humidity ?? 'N/A'}%</p>
+      </div>
+    </div>
+  );
+};
+
+export default Firebasecode;
