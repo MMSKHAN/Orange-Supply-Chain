@@ -21,8 +21,7 @@ const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
 const Firebasecode = () => {
-  const [gpsData, setGpsData] = useState({});
-  const [dhtData, setDhtData] = useState({});
+  const [sensorData, setSensorData] = useState({});
 
   // Leaflet custom marker icon
   const markerIcon = new L.Icon({
@@ -34,73 +33,60 @@ const Firebasecode = () => {
   });
 
   useEffect(() => {
-    const gpsDataRef = ref(database, 'gps_data'); // Path to gps_data
     const sensorDataRef = ref(database, 'sensor_data'); // Path to sensor_data
-
-    // Listen for changes in GPS data
-    const gpsListener = onValue(gpsDataRef, (snapshot) => {
+  
+    // Listen for changes in sensor data (both GPS and DHT)
+    const sensorDataListener = onValue(sensorDataRef, (snapshot) => {
       const data = snapshot.val();
-      console.log("GPS Data:", data);
       if (data) {
-        // Get the first record from gps_data
-        const firstGpsRecord = Object.values(data)[0];
-        setGpsData(firstGpsRecord || {});
+        // Get the latest record from sensor_data
+        const latestRecord = Object.values(data).slice(-1)[0];
+        console.log("Latest Sensor Data:", latestRecord);  // Check the data here
+        setSensorData(latestRecord || {});
       } else {
-        setGpsData({});
+        setSensorData({});
       }
     });
-
-    // Listen for changes in DHT sensor data
-    const sensorListener = onValue(sensorDataRef, (snapshot) => {
-      const data = snapshot.val();
-      console.log("DHT Data:", data);
-      if (data) {
-        const firstSensorRecord = Object.values(data)[0];
-        setDhtData(firstSensorRecord || {});
-      } else {
-        setDhtData({});
-      }
-    });
-
-    // Clean up the listeners when the component unmounts
+  
+    // Cleanup the listener when the component unmounts
     return () => {
-      off(gpsDataRef, "value", gpsListener);
-      off(sensorDataRef, "value", sensorListener);
+      off(sensorDataRef, "value", sensorDataListener);
     };
   }, []);
+  
+  // Destructure the latest sensor data
+  const { latitude, longitude, altitude, speed, temperature, humidity } = sensorData;
 
-  // Set default latitude and longitude if gpsData is empty
-  const latitude = gpsData.latitude || 30.15;  // Default coordinates
-  const longitude = gpsData.longitude || 71.45;
+  // Set default values if data is missing
+  const displayLatitude = latitude || 30.15;
+  const displayLongitude = longitude || 71.45;
 
   return (
     <div className="Firebase">
-      <h1 className='orderStatus' >Order Status</h1>
+      <h1>Order Status</h1>
 
-   <div className="firbasecon">
-       {/* Display GPS Data */}
-       <div className='gpscontainer' >
-        <h2 className='gps' >Weather </h2>
-        <p><strong className='lat' >Temperature:</strong> {dhtData.temperature ?? 'N/A'}°C</p>
-        <p><strong className='lat'>Humidity:</strong> {dhtData.humidity ?? 'N/A'}%</p>
-      </div>
-       <div className='gpscontainer' >
-        <h2 className='gps' >Location</h2>
-        <p><strong className='lat' >Latitude:</strong> {gpsData.latitude ?? 'N/A'}</p>
-        <p><strong className='lat' >Longitude:</strong> {gpsData.longitude ?? 'N/A'}</p>
-        <p><strong className='lat' >Speed:</strong> {gpsData.speed ?? 'N/A'} km/h</p>
-        <p><strong className='lat' >Altitude:</strong> {gpsData.altitude ?? 'N/A'} meters</p>
-      </div>
+      <div className="firbasecon">
+        {/* Display GPS Data and DHT Sensor Data */}
+        <div className="gpscontainer">
+          <h2>Weather</h2>
+          <p><strong>Temperature:</strong> {temperature ?? 'N/A'}°C</p>
+          <p><strong>Humidity:</strong> {humidity ?? 'N/A'}%</p>
+        </div>
 
-      {/* Display DHT Sensor Data */}
-    
-   </div>
+        <div className="gpscontainer">
+          <h2>Location</h2>
+          <p><strong>Latitude:</strong> {latitude ?? 'N/A'}</p>
+          <p><strong>Longitude:</strong> {longitude ?? 'N/A'}</p>
+          <p><strong>Speed:</strong> {speed ?? 'N/A'} km/h</p>
+          <p><strong>Altitude:</strong> {altitude ?? 'N/A'} meters</p>
+        </div>
+      </div>
 
       {/* Leaflet Map */}
       <div style={{ height: '400px', width: '100%' }}>
         <MapContainer
-          center={[latitude, longitude]}
-          zoom={13}
+          center={[displayLatitude, displayLongitude]}
+          zoom={10}
           scrollWheelZoom={false}
           style={{ height: "100%", width: "100%" }}
         >
@@ -112,10 +98,10 @@ const Firebasecode = () => {
           
           {/* Only render Marker if valid GPS coordinates exist */}
           {latitude && longitude && (
-            <Marker position={[latitude, longitude]} icon={markerIcon}>
+            <Marker position={[displayLatitude, displayLongitude]} icon={markerIcon}>
               <Popup>
-                <b>Latitude:</b> {latitude} <br />
-                <b>Longitude:</b> {longitude}
+                <b>Latitude:</b> {displayLatitude} <br />
+                <b>Longitude:</b> {displayLongitude}
               </Popup>
             </Marker>
           )}

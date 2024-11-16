@@ -4,7 +4,7 @@ contract SupplyChain {
     enum EntityType { Farmer, Wholesaler, Logistics, Retailer, Customer }
     
     address public owner;
-    uint public id;  // Make id public to easily check current value
+    uint public id;  
     struct Entity {
         address Firmadd;
         string Firmname;
@@ -17,12 +17,12 @@ contract SupplyChain {
     }
     
     struct Product {
-        uint id; // Unique ID for each product
+        uint id; 
         string variety;
         uint price;
         uint quantity;
         string dateOfHarvest;
-        address currentOwner; // Current owner of the product
+        address currentOwner;
         address creator;
     }
     
@@ -84,7 +84,7 @@ contract SupplyChain {
     }
 
     function getEntity() public view returns (Entity[] memory) {
-        return entities; // Return all entities
+        return entities;
     }
 
     function productCreation(
@@ -97,17 +97,17 @@ contract SupplyChain {
         require(entityAllowed[msg.sender], "Entity is not allowed to create products");
         
         Product memory newProduct = Product({
-            id: id, // Assign unique ID
+            id: id, 
             variety: _variety,
             price: _price,
             quantity: _quantity,
             dateOfHarvest: _date,
-            currentOwner: msg.sender, // Initial creator is the current owner
+            currentOwner: msg.sender, 
             creator: msg.sender
         });
         
         products.push(newProduct);
-        id++; // Increment ID after adding the new product
+        id++; 
     }
 
     function getProducts() public view returns (Product[] memory) {
@@ -131,23 +131,19 @@ function updateProductPrice(uint _productId, uint _newPrice) public {
         require(entityAllowed[msg.sender], "Entity is not allowed to purchase products.");
         require(product.quantity > 0, "Product out of stock.");
         require(_weight <= product.quantity, "Insufficient product quantity.");
-
-        // Ensure that the payment is made to the current owner
         (bool success, ) = product.currentOwner.call{value: msg.value}("");
         require(success, "Ether transfer failed");
-
-        // Create new product to represent the purchase
         Product memory newProduct = Product({
-            id: id, // Assign a unique ID
+            id: id, 
             variety: _variety,
             price: _price,
             quantity: _weight,
             dateOfHarvest: _date,
-            currentOwner: msg.sender, // New owner is the buyer
+            currentOwner: msg.sender, 
             creator: product.creator
         });
         
-        products.push(newProduct); // Add the new product to the array
+        products.push(newProduct); 
         emit ProductCreated(newProduct.id, msg.sender); 
         product.quantity -= _weight; 
 
@@ -198,7 +194,7 @@ function updateProductPrice(uint _productId, uint _newPrice) public {
         Delivery storage currentDelivery = deliveries[msg.sender];
         require(currentDelivery.customer != address(0), "No pending delivery");
 
-        delete deliveries[msg.sender]; // Clear the delivery record on rejection
+        delete deliveries[msg.sender]; 
     }
 
     function cancelDelivery() public {
@@ -216,35 +212,44 @@ function updateProductPrice(uint _productId, uint _newPrice) public {
     require(entityAllowed[msg.sender], "Please register yourself");
     Delivery storage currentDelivery = deliveries[msg.sender];
     require(currentDelivery.customer != address(0), "No pending delivery");
-
-    // Transfer payment to the customer and logistics
     payable(currentDelivery.customer).transfer(currentDelivery.totalBill - currentDelivery.fair);
     payable(currentDelivery.logistics).transfer(currentDelivery.fair);
-    
-    // Access the product being delivered
     Product storage product = products[currentDelivery.productId]; 
     require(product.quantity >= currentDelivery.quantity, "Not enough product quantity");
-
-    // Update the existing product's quantity
     product.quantity -= currentDelivery.quantity;
-
-    // Create a new product record for the received delivery
     Product memory newProduct = Product({
-        id: id, // Assign a unique ID
-        variety: product.variety, // Access variety from the existing product
-        price: product.price, // Access price from the existing product
-        quantity: currentDelivery.quantity, // Use the quantity from the delivery
-        dateOfHarvest: product.dateOfHarvest, // Access date of harvest from the existing product
-        currentOwner: msg.sender, // New owner is the receiver
-        creator: product.creator // Original creator
+        id: id, 
+        variety: product.variety, 
+        price: product.price, 
+        quantity: currentDelivery.quantity, 
+        dateOfHarvest: product.dateOfHarvest, 
+        currentOwner: msg.sender, 
+        creator: product.creator 
     });
-
-    // Add the new product to the products array
     products.push(newProduct);
-    id++; // Increment ID for the next new product
-
-    // Clear the delivery record
+    id++; 
     delete deliveries[msg.sender];
+}
+function getDeliveryDetails(address _customer) public view returns (
+    address logistics,
+    uint quantity,
+    address customer,
+    uint fair,
+    uint totalBill,
+    uint productId
+) {
+    require(entityAllowed[_customer], "Customer is not registered");
+    Delivery memory currentDelivery = deliveries[_customer];
+    require(currentDelivery.customer != address(0), "No delivery found for this customer");
+
+    return (
+        currentDelivery.logistics,
+        currentDelivery.quantity,
+        currentDelivery.customer,
+        currentDelivery.fair,
+        currentDelivery.totalBill,
+        currentDelivery.productId
+    );
 }
 
 

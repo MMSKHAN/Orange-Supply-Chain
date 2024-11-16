@@ -128,9 +128,10 @@ function OrderStatus({ state }) {
                     <button className='orgerbtn' onClick={handleReceive}>Receive Delivery</button>
                 </div>
             )}
-
+<Firebasecode />
             {/* Conditionally render Firebasecode only when delivery is accepted */}
             {showActions && <Firebasecode />}
+            
         </div>
     );
 }
