@@ -36,7 +36,7 @@ function OrderStatus({ state }) {
         console.log(deliveryData)
                     setError(''); // Clear any previous error
                 } catch (err) {
-                    setError('No delivery found or failed to fetch delivery details.');
+                    setError('No delivery found ');
                     console.error(err);
                 }
             };
@@ -128,7 +128,7 @@ function OrderStatus({ state }) {
                     <button className='orgerbtn' onClick={handleReceive}>Receive Delivery</button>
                 </div>
             )}
-<Firebasecode />
+{/* <Firebasecode /> */}
             {/* Conditionally render Firebasecode only when delivery is accepted */}
             {showActions && <Firebasecode />}
             

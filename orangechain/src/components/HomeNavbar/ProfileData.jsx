@@ -18,7 +18,7 @@ function ProfileData({ state }) {
   const [filteredProducts, setFilteredProducts] = useState([]); // Filtered products based on the connected address
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [show, setShow] = useState(false);
+  const [show, setShow] = useState(null); // Track which product index is currently being edited
   const [currentProductIndex, setCurrentProductIndex] = useState(null); // Track which product was clicked
   const [newPrice, setNewPrice] = useState(''); // Store the new price input
 
@@ -75,10 +75,15 @@ function ProfileData({ state }) {
     return <div>{error}</div>;
   }
 
-  // Function to show the input container when the pencil icon is clicked
+  // Function to show or hide the price input container when the pencil icon is clicked
   const clickShow = (index) => {
+    // Toggle visibility of the price input container for the clicked product
+    if (show === index) {
+      setShow(null); // Hide if the same product is clicked again
+    } else {
+      setShow(index); // Show for the clicked product
+    }
     setCurrentProductIndex(index);
-    setShow(true);
     setNewPrice(''); // Reset the new price input field when opening a new one
   };
 
@@ -106,7 +111,7 @@ function ProfileData({ state }) {
       setFilteredProducts(updatedProducts);
 
       // Hide the price input container
-      setShow(false);
+      setShow(null); // Hide after successful price update
       setNewPrice('');
       alert('Price updated successfully');
     } catch (err) {
@@ -121,7 +126,7 @@ function ProfileData({ state }) {
       {/* Show filtered entity data */}
       <div className="filtered-entities">
         {filteredEntities.length > 0 ? (
-          <div>
+          <div className="product-cardd" >
             <h2 className='ProfileDataHeading'>Personal Data</h2>
             {filteredEntities.map((entity, index) => (
               <div key={index} className="entity-card">
@@ -137,45 +142,70 @@ function ProfileData({ state }) {
             ))}
           </div>
         ) : (
-          <p className='ProfileDataHeading2'>No matching entities found for this address.</p>
+          <p className='ProfileDataHeading2'>No entity found for this address.</p>
         )}
       </div>
 
       {/* Show filtered product data */}
-      <div className="filtered-products">
+        <h2 className='ProfileDataHeading2'>Products</h2>
+      <div className="filtered-product">
         {filteredProducts.length > 0 ? (
-          <div>
-            <h2 className='ProfileDataHeading2'>Oranges</h2>
-            {filteredProducts.map((product, index) => (
-              <div key={index} className="entity-card">
-                <p><strong className='str'>Product ID:</strong> {Number(product.id)}</p>
-                <p><strong className='str'>Variety:</strong> {product.variety}</p>
-                <p className='editcontainer'>
-                  <p><strong className='str'>Price:</strong> {state.web3.utils.fromWei(product.price.toString(), 'ether')} ETH</p>
-                  <PencilSquare className='changeicon' onClick={() => clickShow(index)} />
-                </p>
-                <p><strong className='str'>Quantity:</strong> {Number(product.quantity)}</p>
-                <p><strong className='str'>Date of Harvest:</strong> {product.dateOfHarvest}</p>
-                <p><strong className='str'>Creator:</strong> {product.creator}</p>
-                <p><strong className='str'>Current Owner:</strong> {product.currentOwner}</p>
+          <>
+            {filteredProducts.map((product, index) => {
+              // Parse the variety string into an actual array
+              const varietyArray = JSON.parse(product.variety);  // Parse the string to get the array
+              const variety = varietyArray[0];  // First element is the variety name
+              const imageHash = varietyArray[1];  // Second element is the image hash
+              const  prediction =varietyArray[2];
+              const  confidence =varietyArray[3];
+              const imageUrl = `https://gateway.pinata.cloud/ipfs/${imageHash}`;
 
-                {show && currentProductIndex === index && (
-                  <div className='changePriceContainer'>
-                    <input
-                      type='number'
-                      value={newPrice}
-                      onChange={(e) => setNewPrice(e.target.value)}
-                      placeholder='New price (in ETH)'
+              return (
+              
+                 <div key={index} className="product-cards">
+                  {/* Display Image */}
+                  <div className="product-image">
+                    <img 
+                      src={imageUrl} 
+                      alt={variety} 
+                      className="product-img"
                     />
-                    <button className='changebtn' onClick={handleChange}>Change</button>
                   </div>
-                )}
-                <hr />
-              </div>
-            ))}
-          </div>
+
+                  {/* Display Product Details */}
+                  <p className='card-description'>Variety: <p>{variety}</p></p>
+                  <p className='card-description'>Price: <p>{state.web3.utils.fromWei(product.price.toString(), 'ether')} ETH</p></p>
+                  <p className='card-description'>Quantity: <p>{Number(product.quantity)}</p></p>
+                  <p className='card-description'>Date of Harvest: <p>{product.dateOfHarvest}</p></p>
+                  <p className='card-description'>Creator: <p>{product.creator}</p></p>
+                  <p className='card-description'>Current Owner: <p>{product.currentOwner}</p></p>
+                  <p className='card-description'>Quality: <span>{prediction}</span></p>
+                  <p className='card-description'> confidence: <span>{Math.round(confidence)}%</span></p>
+     
+                  {/* Edit price */}
+                  <p className='editcontainer'>
+                    <PencilSquare className='changeicon' onClick={() => clickShow(index)} />
+                  </p>
+
+                  {/* Show price change input */}
+                  {show === index && (
+                    <div className='changePriceContainer'>
+                      <input
+                        type='number'
+                        value={newPrice}
+                        onChange={(e) => setNewPrice(e.target.value)}
+                        placeholder='New price (in ETH)'
+                      />
+                      <button className='changebtn' onClick={handleChange}>Change</button>
+                    </div>
+                  )}
+             
+               </div>
+              );
+            })}
+           </> 
         ) : (
-          <p className='ProfileDataHeading2'>No matching products found for this address.</p>
+          <p className='ProfileDataHeading2'>No product found for this address.</p>
         )}
       </div>
     </div>

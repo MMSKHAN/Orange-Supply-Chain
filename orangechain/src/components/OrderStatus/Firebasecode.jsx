@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import React, { useState, useEffect, useRef } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, onValue, off } from 'firebase/database';
 import 'leaflet/dist/leaflet.css'; // Leaflet's CSS for proper map styling
@@ -22,7 +22,8 @@ const database = getDatabase(app);
 
 const Firebasecode = () => {
   const [sensorData, setSensorData] = useState({});
-
+  const mapRef = useRef(null); // Reference for the MapContainer
+  
   // Leaflet custom marker icon
   const markerIcon = new L.Icon({
     iconUrl: 'https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png',
@@ -61,6 +62,19 @@ const Firebasecode = () => {
   const displayLatitude = latitude || 30.15;
   const displayLongitude = longitude || 71.45;
 
+  // Component to handle map refocusing whenever sensor data changes
+  const RefocusMap = ({ lat, lon }) => {
+    const map = useMap();
+    useEffect(() => {
+      if (map) {
+        map.panTo(new L.LatLng(lat, lon)); // Pan map to the new marker position
+        map.setView(new L.LatLng(lat, lon), 10); // Set zoom level
+      }
+    }, [lat, lon, map]);
+
+    return null; // This component does not render anything directly
+  };
+
   return (
     <div className="Firebase">
       <h1>Order Status</h1>
@@ -89,6 +103,7 @@ const Firebasecode = () => {
           zoom={10}
           scrollWheelZoom={false}
           style={{ height: "100%", width: "100%" }}
+          ref={mapRef}  // Assign map reference
         >
           {/* Tile Layer for OpenStreetMap */}
           <TileLayer
@@ -105,6 +120,9 @@ const Firebasecode = () => {
               </Popup>
             </Marker>
           )}
+          
+          {/* Refocus the map when the position updates */}
+          <RefocusMap lat={displayLatitude} lon={displayLongitude} />
         </MapContainer>
       </div>
     </div>

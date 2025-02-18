@@ -75,7 +75,7 @@ const NavBar = () => {
         transition={{ duration: 0.5, ease: 'easeInOut' }} // Smooth easing
       >
         <ul style={styles.menuList}>
-          {['Home','About the Platform','Register Member','Create Product','Product','Members','OrderStatus'].map((item, index) => (
+          {['Home','About the Platform','Register Member','Create Product',"Product",'Members','OrderStatus'].map((item, index) => (
             <motion.li
               key={item}
               style={styles.menuItem}

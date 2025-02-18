@@ -17,6 +17,7 @@ import About from "./components/About/About";
 import OrderStatus from "./components/OrderStatus/OrderStatus";
 import Delivery from "./components/Delevery/Delivery";
 import ProfileData from "./components/HomeNavbar/ProfileData";
+import ProductMain from "./components/GetProducts/ProductMain";
 
 function App() {
   const [state, setState] = useState({ web3: null, contract: null });
@@ -69,13 +70,15 @@ function App() {
           <Route path="/" element={<Home state={state} />} />
           <Route path="/registermember" element={<CreateAccount state={state} />} />
           <Route path="/createproduct" element={<CreateProduct state={state} />} />
-          <Route path="/product" element={<Products state={state} />} />
+          <Route path="/product" element={<ProductMain state={state} />} />
           <Route path="/members" element={<Entities state={state} />} />
           <Route path="/OrderStatus" element={<OrderStatus state={state} />} />
           <Route path="/aboutthe platform" element={<About state={state} />} />
           <Route path="/profile data" element={<ProfileData state={state} />} />
           <Route path="/Order/:id/:price" element={<Order state={state} />}/>
           <Route path="/Delivery/:id/:price" element={<Delivery state={state} />}/>
+          <Route path="/product-details/:id/:variety/:price/:quantity/:dateOfHarvest/:creator/:currentOwner/:imageHash/:prediction/:confidence" element={<Products  state={state}   />}  />
+
           <Route path="/DirectPurchase/:id/:price/:variety/:dateOfHarvest/:creator"element={<DirectPurchase state={state} />} />
         </Routes>
         <Footer/>

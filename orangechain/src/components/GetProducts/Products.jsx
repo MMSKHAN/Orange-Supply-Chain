@@ -1,100 +1,60 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import React from 'react';
+import { NavLink, useParams } from 'react-router-dom';
 import './Products.css'; // Import the CSS file
-// import orange from "./img.png"
+
 function Products({ state }) {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [searchTerm, setSearchTerm] = useState('');
-  const selectSound = useRef(new Audio('/music/menu.mp3'));
-  const handleMouseEnter = () => {
-   
-    selectSound.current.play();
-  };
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const { contract } = state;
+  // Get the parameters from the URL (from useParams)
+  const { id, variety, price, quantity, dateOfHarvest, creator, currentOwner, imageHash,prediction,confidence } = useParams();
+  const imageUrl = `https://gateway.pinata.cloud/ipfs/${imageHash}`;  // Construct the image URL
 
-      if (contract) {
-        try {
-          const fetchedProducts = await contract.methods.getProducts().call();
-          console.log(fetchedProducts);
-          setProducts(fetchedProducts);
-        } catch (err) {
-          console.error('Error fetching products:', err);
-          setError('Failed to fetch products');
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchProducts();
-  }, [state]);
-
-  const handleSearchChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const filteredProducts = products.filter(product =>
-    product.variety.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    product.id.toString().includes(searchTerm) // Include ID in the search
-  );
-
-  if (loading) {
-    return <div>Loading products...</div>;
-  }
-
-  if (error) {
-    return <div>{error}</div>;
-  }
+  // Check if state.web3 is available before accessing it
+  const priceInEth = state?.web3?.utils ? state.web3.utils.fromWei(price.toString(), 'ether') : null;
 
   return (
-    <div className="products-container">
-      <h1>Oranges</h1>
-   <div className='inputdev' >   <input
-        type="text"
-        placeholder="Search products..."
-        value={searchTerm}
-        onChange={handleSearchChange}
-        className="search-bar"
-      /></div>
-      {filteredProducts.length === 0 ? (
-        <p>No products found.</p>
-      ) : (
-        <div className="cards-container">
-          {filteredProducts.map((product, index) => (
-            <div key={index} className="product-card">
-              {/* <div className="orange">  <img src={orange} alt="orange" /></div> */}
-              <p className='card-description'>ID: <p> {Number(product.id)}</p> </p>
-              <p className='card-description' >Variety:  <p>{product.variety}</p> </p>
-              <p className='card-description' >Price: <p>{state.web3.utils.fromWei(product.price.toString(), 'ether')} ETH</p> </p>
-              <p className='card-description'>Quantity: <p>{Number(product.quantity)}</p></p>  {/* Convert BigInt to number */}
-              <p className='card-description' >Date of Harvest: <p>{product.dateOfHarvest}</p> </p>
-              <p className='card-description' >Creator: <p>{product.creator}</p></p>
-              <p className='card-description' >Current Owner: <p> {product.currentOwner}</p>  </p>
-              <div className='ordernav' >
-                <NavLink 
-                  to={`/DirectPurchase/${product.id}/${product.price}/${product.variety}/${product.dateOfHarvest}/${product.creator}`} 
-                onMouseEnter={ handleMouseEnter}
-                  className="orgerbtn"
-                >
-                  Direct Purchase
-                </NavLink>
-             
-                <NavLink 
-                  to={`/Delivery/${product.id}/${product.price}`} 
-                onMouseEnter={ handleMouseEnter}
-                  className="orgerbtn"
-                >
-                  Order
-                </NavLink>
-              </div>
-            </div>
-          ))}
+    <div className="varitycontainer">
+      <h1>{variety}</h1>
+
+      {/* Display a single product's details */}
+      <div className="product-card">
+        {/* Display Image */}
+        <div className="product-image">
+          <img 
+            src={imageUrl} 
+            alt={variety}  // Variety name for alt text
+            className="product-img"
+          />
         </div>
-      )}
+
+        {/* Display Product Details */}
+        <div>
+          <p className='card-description'>ID: <span>{id}</span></p>
+          <p className='card-description'>Variety: <span>{variety}</span></p> {/* Display variety */}
+          <p className='card-description'>Price: <span>{priceInEth ? `${priceInEth} ETH` : 'Loading...'}</span></p>
+          <p className='card-description'>Quantity: <span>{quantity}</span></p>
+          <p className='card-description'>Date of Harvest: <span>{dateOfHarvest}</span></p>
+          <p className='card-description'>Creator: <span>{creator}</span></p>
+          <p className='card-description'>Current Owner: <span>{currentOwner}</span></p>
+          <p className='card-description'>Quality: <span>{prediction}</span></p>
+          <p className='card-description'> confidence: <span>{Math.round(confidence)}%</span></p>
+        </div>
+
+        {/* Action Buttons */}
+        <div className='ordernav'>
+          <NavLink 
+            to={`/DirectPurchase/${id}/${price}/${variety}/${dateOfHarvest}/${creator}`} 
+            className="orgerbtn"
+          >
+            Direct Purchase
+          </NavLink>
+
+          <NavLink 
+            to={`/Delivery/${id}/${price}`} 
+            className="orgerbtn"
+          >
+            Order
+          </NavLink>
+        </div>
+      </div>
     </div>
   );
 }

@@ -119,6 +119,7 @@ function Entities({ state }) {
               <p className="card-description">Contact: <span>{entity.ownerContact}</span>  </p>
               <p className="card-description">City:  <span>{entity.city}</span> </p>
               <p className="card-description">Type: <span>{entityTypeNames[entity.entityType]}</span> </p>
+              <p>{console.log(entity.isAllowed)}</p>
               <p className="card-description">Status: <span>{entity.isAllowed ? 'Allowed' : 'Disallowed'}</span> </p>
         </div>
                  <button className='allowbtn' onClick={() => entity.isAllowed ? handleDisallow(entity.Firmadd) : handleAllow(entity.Firmadd)}>

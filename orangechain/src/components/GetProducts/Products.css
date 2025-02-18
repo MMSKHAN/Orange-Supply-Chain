@@ -44,7 +44,7 @@ box-shadow: 10px 10px 17px 0px rgba(0,0,0,0.75);
     border-radius: 8px;
     padding: 16px;
     margin: 10px;
-    width: calc(33.33% - 20px); /* Adjust width to fit three cards per row */
+    width: calc(33.33% - 20px); 
     box-sizing: border-box;
     transition: box-shadow 0.3s;
   }
@@ -78,4 +78,26 @@ box-shadow: 10px 10px 17px 0px rgba(0,0,0,0.75);
   }
   .card-description > p{
     color: white;
-  }
+  }.product-image>img{
+    width: 100%;
+ }
+ .varitycontainer{
+  display: flex
+;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    padding: 20px;
+    position: relative;
+    top: 10rem;
+    margin-bottom: 10rem;
+ }.varitycontainer>h1{
+  color: #FACE17;
+  font-size: 3rem;
+  font-family: "Roboto", sans-serif;
+  font-weight: 900;
+  font-style: normal;
+  text-align: center;
+  margin-bottom: 2rem;
+ }
